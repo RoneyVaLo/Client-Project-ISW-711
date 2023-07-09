@@ -15,11 +15,6 @@ const RegisterForm = () => {
             <h1>User Registration</h1>
 
             <div>
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" required />
-            </div>
-
-            <div>
                 <label htmlFor="firstName">First Name</label>
                 <input type="text" name="firstName" required />
             </div>
@@ -27,6 +22,16 @@ const RegisterForm = () => {
             <div>
                 <label htmlFor="lastName">Last Name</label>
                 <input type="text" name="lastName" required />
+            </div>
+
+            <div>
+                <label htmlFor="age">Age</label>
+                <input type="number" name="age" required />
+            </div>
+
+            <div>
+                <label htmlFor="username">Username</label>
+                <input type="text" name="username" required />
             </div>
 
             <div>
