@@ -14,7 +14,7 @@ const RegisterForm = () => {
         e.preventDefault();
 
         // TODO: Agregar el input y la variable para la foto de perfil
-        const { first_name, last_name, age, username, password, repeatPassword } = e.target;
+        const { first_name, last_name, age, email, password, repeatPassword } = e.target;
         console.log(password.value);
         console.log(repeatPassword.value);
 
@@ -25,7 +25,7 @@ const RegisterForm = () => {
                         first_name: first_name.value,
                         last_name: last_name.value,
                         age: age.value,
-                        user_name: username.value,
+                        user_name: email.value,
                         password: password.value
                     })
                     .then((response) => {
@@ -66,8 +66,8 @@ const RegisterForm = () => {
             </div>
 
             <div>
-                <label htmlFor="username">Username</label>
-                <input type="text" name="username" required />
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" required />
             </div>
 
             <div>

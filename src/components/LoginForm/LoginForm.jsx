@@ -18,11 +18,11 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { username, password } = e.target;
+        const { email, password } = e.target;
 
         axios.post("http://localhost:3001/api/login",
             {
-                user_name: username.value,
+                user_name: email.value,
                 password: password.value
             })
             .then(async (response) => {
@@ -47,8 +47,8 @@ const LoginForm = () => {
             <h1>Login</h1>
 
             <div>
-                <label htmlFor="username">Username</label>
-                <input type="text" name="username" required />
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" required />
             </div>
 
             <div>
