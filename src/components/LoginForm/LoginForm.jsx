@@ -22,7 +22,7 @@ const LoginForm = () => {
 
         axios.post("http://localhost:3001/api/login",
             {
-                user_name: email.value,
+                email: email.value,
                 password: password.value
             })
             .then(async (response) => {

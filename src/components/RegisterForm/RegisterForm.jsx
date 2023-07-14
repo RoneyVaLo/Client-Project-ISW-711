@@ -25,7 +25,7 @@ const RegisterForm = () => {
                         first_name: first_name.value,
                         last_name: last_name.value,
                         age: age.value,
-                        user_name: email.value,
+                        email: email.value,
                         password: password.value
                     })
                     .then((response) => {
