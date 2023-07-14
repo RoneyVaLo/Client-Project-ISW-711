@@ -1,13 +1,49 @@
 import { useState } from "react";
+import axios from "axios";
+import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
 
     const [showPassword, setShowPassword] = useState(false);
-
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // TODO: Agregar el input y la variable para la foto de perfil
+        const { first_name, last_name, age, username, password, repeatPassword } = e.target;
+        console.log(password.value);
+        console.log(repeatPassword.value);
+
+        if (password.value === repeatPassword.value) {
+            try {
+                axios.post("http://localhost:3001/api/users",
+                    {
+                        first_name: first_name.value,
+                        last_name: last_name.value,
+                        age: age.value,
+                        user_name: username.value,
+                        password: password.value
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        toast.success("Register successfull");
+                        navigate('/');
+                    })
+                    .catch(err => {
+                        console.log(err.message);
+                        let errorMessage = err.response ? err.response.data.error : err.message
+                        toast.error(errorMessage);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            toast.error("Passwords do not match");
+        }
     };
 
     return (
@@ -15,13 +51,13 @@ const RegisterForm = () => {
             <h1>User Registration</h1>
 
             <div>
-                <label htmlFor="firstName">First Name</label>
-                <input type="text" name="firstName" required />
+                <label htmlFor="first_name">First Name</label>
+                <input type="text" name="first_name" required />
             </div>
 
             <div>
-                <label htmlFor="lastName">Last Name</label>
-                <input type="text" name="lastName" required />
+                <label htmlFor="last_name">Last Name</label>
+                <input type="text" name="last_name" required />
             </div>
 
             <div>
