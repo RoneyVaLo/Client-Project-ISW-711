@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
 
   return (
     <div>
+      <Toaster />
       <RouterProvider router={router} />
     </div>
   )
