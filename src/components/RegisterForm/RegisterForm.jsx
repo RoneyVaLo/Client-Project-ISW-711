@@ -15,32 +15,27 @@ const RegisterForm = () => {
 
         // TODO: Agregar el input y la variable para la foto de perfil
         const { first_name, last_name, age, email, password, repeatPassword } = e.target;
-        console.log(password.value);
-        console.log(repeatPassword.value);
 
         if (password.value === repeatPassword.value) {
-            try {
-                axios.post("http://localhost:3001/api/users",
-                    {
-                        first_name: first_name.value,
-                        last_name: last_name.value,
-                        age: age.value,
-                        email: email.value,
-                        password: password.value
-                    })
-                    .then((response) => {
-                        console.log(response);
-                        toast.success("Register successfull");
-                        navigate('/');
-                    })
-                    .catch(err => {
-                        console.log(err.message);
-                        let errorMessage = err.response ? err.response.data.error : err.message
-                        toast.error(errorMessage);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
+        // TODO: Cifrar la contraseña antes de enviarla al servidor, igual descifrar a la hora de hacer login
+            axios.post("http://localhost:3001/api/users",
+                {
+                    first_name: first_name.value,
+                    last_name: last_name.value,
+                    age: age.value,
+                    email: email.value,
+                    password: password.value
+                })
+                .then((response) => {
+                    console.log(response);
+                    toast.success("Register successfull");
+                    navigate('/');
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    let errorMessage = err.response ? err.response.data.error : err.message
+                    toast.error(errorMessage);
+                });
         } else {
             toast.error("Passwords do not match");
         }
