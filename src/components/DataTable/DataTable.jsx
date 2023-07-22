@@ -1,4 +1,12 @@
-const DataTable = ({ headers, data }) => {
+// Import styles
+import './dataTable.scss';
+
+const DataTable = ({ headers, data, ids, handleRun, handleEdit, handleDelete }) => {
+
+    const getIdRow = (e) => {
+        const trId = e.target.closest('tr').getAttribute('id');
+        return trId;
+    };
 
     return (
         <table>
@@ -15,7 +23,7 @@ const DataTable = ({ headers, data }) => {
             </thead>
             <tbody>
                 {data.map((prompt, index) => (
-                    <tr key={index}>
+                    <tr key={index} id={ids[index]}>
                         <td>
                             <input type="checkbox" name="" id="" />
                         </td>
@@ -23,10 +31,10 @@ const DataTable = ({ headers, data }) => {
                             <td key={i}>{dataPromt}</td>
                         ))}
 
-                        <td>
-                            <button><ion-icon name="eye-sharp"></ion-icon></button>
-                            <button><ion-icon name="pencil-sharp"></ion-icon></button>
-                            <button><ion-icon name="trash-sharp"></ion-icon></button>
+                        <td className='crud'>
+                            <button onClick={(e) => handleRun(getIdRow(e))}><ion-icon name="eye-sharp"></ion-icon></button>
+                            <button onClick={(e) => handleEdit(getIdRow(e))}><ion-icon name="pencil-sharp"></ion-icon></button>
+                            <button onClick={(e) => handleDelete(getIdRow(e))}><ion-icon name="trash-sharp"></ion-icon></button>
                         </td>
                     </tr>
                 ))}
