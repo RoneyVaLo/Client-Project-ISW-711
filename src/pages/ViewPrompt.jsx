@@ -61,27 +61,41 @@ const ViewPrompt = () => {
         console.log("ID:", idPrompt);
     };
 
+    // Asynchronous function to handle the deletion of a specific prompt
     const handleDelete = async (idPrompt) => {
+        // Display a confirmation dialog to ensure the user really wants to delete the prompt
         const responseUser = confirm("Are you sure to delete?");
 
         if (responseUser) {
             try {
+                // Configuration for headers to include the authorization token in the request
                 const config = {
                     headers: {
                         authorization: `Bearer ${sessionStorage.token}`
                     }
                 };
 
-                const promptToDelete = await axios.get(`http://localhost:3001/api/prompts?id=${idPrompt}`, config);
-                await axios.delete(`http://localhost:3001/api/prompts?id=${idPrompt}`, config);
+                // Create the URL for the request
+                const url = `http://localhost:3001/api/prompts?id=${idPrompt}`;
 
+                // Fetch the details of the prompt to be deleted from the server using a GET request
+                const { data: promptToDelete } = await axios.get(url, config);
+
+                // Send a DELETE request to the server to delete the prompt
+                await axios.delete(url, config);
+
+                // Update the local state (dataPrompts) to reflect the deleted prompt
                 const updatedDataPrompts = dataPrompts.filter(prompt => prompt[0] !== promptToDelete.data.name);
                 setDataPrompts(updatedDataPrompts);
 
-                toast.success('Prompt deleted success');
+                // Display a success notification using the "toast" library
+                toast.success('Prompt deleted successfully');
             } catch (error) {
+                // If an error occurs during the request, log the error to the console
                 console.log(error);
-                toast.error(error.response.data.error);
+
+                // Display an error message to the user using the server's response (if available)
+                toast.error(error.response?.data?.error || 'An error occurred while deleting the prompt.');
             }
         }
     };
