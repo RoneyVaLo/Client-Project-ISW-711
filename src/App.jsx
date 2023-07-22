@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { useAuth } from './context/AuthContext';
+import { useEffect, useState } from 'react';
 
 import './App.css';
 
@@ -7,11 +10,17 @@ import Home from './pages/Home';
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { Toaster } from 'react-hot-toast';
+import ViewPrompt from './pages/ViewPrompt';
 
 function App() {
 
-  // TODO: Crear un contexto para saber en toda la aplicación si hay alguien logueado
+  const auth = useAuth();
+  
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(auth.currentUser !== "");
+  }, [auth.currentUser])
 
   const router = createBrowserRouter([
     {
@@ -21,12 +30,16 @@ function App() {
       children: [
         {
           path: "/",
-          // TODO: Validar que si está logueado permita ingresar normal y si no que lo mande al Login
-          element: <Login />
+          element: isLogin ? <ViewPrompt /> : <Login />
         },
         {
           path: "/signup",
           element: <Register />,
+          errorElement: <Error />
+        },
+        {
+          path: "/user",
+          element: <div>USERS</div>,
           errorElement: <Error />
         }
       ]
