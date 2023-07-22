@@ -38,8 +38,23 @@ function App() {
           errorElement: <Error />
         },
         {
+          path: "/prompt/run",
+          element: <div>Run PROMPT</div>,
+          errorElement: <Error />
+        },
+        {
+          path: "/prompt/add-edit",
+          element: <div>Add-Edit PROMPT</div>,
+          errorElement: <Error />
+        },
+        {
           path: "/user",
           element: <div>USERS</div>,
+          errorElement: <Error />
+        },
+        {
+          path: "/user/add-edit",
+          element: <div>Add-Edit USERS</div>,
           errorElement: <Error />
         }
       ]
