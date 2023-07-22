@@ -12,22 +12,37 @@ export const useAuth = () => {
     return context;
 };
 
-// eslint-disable-next-line react/prop-types
+
 export const AuthProvider = ({ children }) => {
+
+    useEffect(() => {
+        if (sessionStorage.token) {
+            const fetchData = async () => {
+                const config = {
+                    headers: {
+                        authorization: `Bearer ${sessionStorage.token}`
+                    }
+                };
+
+                const { data } = await axios.get("http://localhost:3001/api/session", config);
+
+                const user = await axios.get(`http://localhost:3001/api/users?id=${data.user}`, config);
+                setCurrentUser(user.data)
+            };
+            fetchData();
+        }
+
+    }, [])
 
     const [currentUser, setCurrentUser] = useState('');
 
-    useEffect(() => {
-
-    }, []);
-
     const login = async (userId) => {
-
         const config = {
             headers: {
                 authorization: `Bearer ${sessionStorage.token}`
             }
-        }
+        };
+
         const user = await axios.get(`http://localhost:3001/api/users?id=${userId}`, config);
         setCurrentUser(user.data)
 
@@ -36,7 +51,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         sessionStorage.token && sessionStorage.removeItem("token");
-        // TODO: Eliminar los datos del usuario
+        
+        // Remove user data
         setCurrentUser("");
     };
 
