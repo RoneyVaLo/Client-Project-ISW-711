@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
@@ -11,10 +11,6 @@ const LoginForm = () => {
     const auth = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
-
-    useEffect(() => {
-        sessionStorage.token && sessionStorage.removeItem("token");
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
