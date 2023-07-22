@@ -2,8 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const RegisterForm = () => {
+
+    const auth = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -40,6 +43,11 @@ const RegisterForm = () => {
             toast.error("Passwords do not match");
         }
     };
+
+    /* if (auth.currentUser !== "") {
+        navigate("/");
+        return window.location.reload();
+    } */
 
     return (
         <form onSubmit={handleSubmit}>
@@ -89,7 +97,7 @@ const RegisterForm = () => {
 
             <div>
                 <button>Register</button>
-                <button>Cancel</button>
+                <button onClick={() => navigate("/")}>Cancel</button>
             </div>
         </form>
     );
