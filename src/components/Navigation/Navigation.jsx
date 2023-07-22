@@ -1,30 +1,36 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import './navigation.scss';
-import { useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
 
 const Navigation = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const [selectedButton, setSelectedButton] = useState('');
 
     const auth = useAuth();
-    // console.log(auth.currentUser === "");
+
 
     useEffect(() => {
-        document.getElementById('home').checked = true;
-    }, [])
+        const currentPath = location.pathname;
+        setSelectedButton(currentPath);
+    }, [location]);
 
 
-    // TODO: Cambiar las rutas a las demás secciones una vez logueado
-
+    // TODO: Validar que cuando este en alguna ruta de los Prompts siga seleccionado el botón de prompts
+    // TODO: Igual con los usuarios, que el botón siga seleccionado aunque sea crear o ver
     return (
         <nav>
             <div className="icon-menu"><ion-icon name="menu-outline"></ion-icon></div>
             <div className="menu">
                 <div className="menu__link">
                     <input type="radio" name="links" id="home"
+                        value="/"
                         onChange={(e) => ((e.target.checked) && navigate("/"))}
+                        checked={(selectedButton === '/' || selectedButton === '/signup')}
+                        disabled={auth.currentUser !== ""}
                     />
                     <label htmlFor="home">
                         <ion-icon name="home-sharp"></ion-icon>
@@ -35,7 +41,9 @@ const Navigation = () => {
                     <>
                         <div className="menu__link">
                             <input type="radio" name="links" id="prompts"
+                                value="/"
                                 onChange={(e) => ((e.target.checked) && navigate("/"))}
+                                checked={selectedButton === '/'}
                             />
                             <label htmlFor="prompts">
                                 <ion-icon name="images-sharp"></ion-icon>
@@ -44,7 +52,9 @@ const Navigation = () => {
 
                         <div className="menu__link">
                             <input type="radio" name="links" id="users"
-                                onChange={(e) => ((e.target.checked) && navigate("/"))}
+                                value="/user"
+                                onChange={(e) => ((e.target.checked) && navigate("/user"))}
+                                checked={selectedButton === '/user'}
                             />
                             <label htmlFor="users">
                                 <ion-icon name="people-sharp"></ion-icon>
