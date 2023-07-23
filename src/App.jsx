@@ -12,11 +12,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ViewPrompt from './pages/ViewPrompt';
 import RunPrompt from './pages/RunPrompt';
+import Add_EditPrompts from './pages/Add-EditPrompts';
 
 function App() {
 
   const auth = useAuth();
-  
+
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function App() {
         },
         {
           path: "/prompt/add-edit",
-          element: <div>Add-Edit PROMPT</div>,
+          element: <Add_EditPrompts />,
           errorElement: <Error />
         },
         {
