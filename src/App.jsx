@@ -11,6 +11,7 @@ import Error from "./pages/Error";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ViewPrompt from './pages/ViewPrompt';
+import RunPrompt from './pages/RunPrompt';
 
 function App() {
 
@@ -39,7 +40,7 @@ function App() {
         },
         {
           path: "/prompt/run",
-          element: <div>Run PROMPT</div>,
+          element: <RunPrompt />,
           errorElement: <Error />
         },
         {
