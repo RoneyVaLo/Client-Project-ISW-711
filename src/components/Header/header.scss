@@ -1,36 +1,49 @@
-header {
-    height: 4em;
-    border-bottom: 2px solid #EBEBEB;
-    // padding: 1em 1.4em;
+.header {
     display: flex;
-    // justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    // background-color: #333;
+    // color: #fff;
+    border-bottom: 2px solid #EBEBEB;
+    font-size: 1.2rem;
 
-    .logo {
-        display: grid;
-        place-content: center;
-        padding: 0 1em;
-        font-size: 1.2em;
-        font-weight: bold;
+    &__title {
+        margin: 0;
     }
 
-    .user {
-        *background-color: red;
-        width: 60%;
+    &__notification-icon {
+        margin-right: 1rem;
+    }
+
+    &__user {
         display: flex;
-        gap: 10%;
-        // justify-content: center;
+        align-items: center;
+    }
 
-        &__name {
-            *background-color: green;
-            display: grid;
-            place-content: center;
-            padding: 0 1em;
+    &__user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    &__user-details {
+        text-align: right;
+        margin: 0 1rem;
+        
+        &-name {
+            width: 100%;
         }
 
-        &__photo {
-            *background-color: blue;
-
-            //TODO: Arreglar lo de las dimensiones de la imagen
+        &-role {
+            text-transform: capitalize;
         }
+    }
+    
+
+    &__user-avatar {
+        width: 60px;
+        height: auto;
+        // height: 60px;
+        border-radius: 50%;
     }
 }
