@@ -5,9 +5,11 @@ import Navigation from "../components/Navigation/Navigation";
 const Home = () => {
     return (
         <>
-        <Navigation />
-        <Header />
-        <Outlet />
+            <Navigation />
+            <main>
+                <Header />
+                <Outlet />
+            </main>
         </>
     );
 }
