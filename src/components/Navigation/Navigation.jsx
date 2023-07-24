@@ -15,6 +15,7 @@ const Navigation = () => {
 
     useEffect(() => {
         const currentPath = location.pathname;
+
         setSelectedButton(currentPath);
     }, [location]);
 
@@ -43,7 +44,7 @@ const Navigation = () => {
                             <input type="radio" name="links" id="prompts"
                                 value="/"
                                 onChange={(e) => ((e.target.checked) && navigate("/"))}
-                                checked={selectedButton === '/'}
+                                checked={(selectedButton === '/' || selectedButton.startsWith('/prompt'))}
                             />
                             <label htmlFor="prompts">
                                 <ion-icon name="images-sharp"></ion-icon>
@@ -54,7 +55,7 @@ const Navigation = () => {
                             <input type="radio" name="links" id="users"
                                 value="/user"
                                 onChange={(e) => ((e.target.checked) && navigate("/user"))}
-                                checked={selectedButton === '/user'}
+                                checked={selectedButton.startsWith('/user')}
                             />
                             <label htmlFor="users">
                                 <ion-icon name="people-sharp"></ion-icon>
