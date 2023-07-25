@@ -6,7 +6,7 @@ const Home = () => {
     return (
         <>
             <Navigation />
-            <main>
+            <main className='home-main'>
                 <Header />
                 <Outlet />
             </main>
