@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
@@ -24,7 +24,7 @@ const LoginForm = () => {
             .then(async (response) => {
                 // console.log(response.data?.session);
                 sessionStorage.setItem("token", response.data.session.token);
-                
+
                 // Get user data for use across all apps
                 await auth.login(response.data.session.user);
 
@@ -39,33 +39,31 @@ const LoginForm = () => {
 
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Login</h1>
+        <form onSubmit={handleSubmit} className="login-form">
+            <h1 className="login-heading">Login</h1>
 
-            <div>
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" required />
+            <div className="form-group">
+                <label htmlFor="email" className="label">Email</label>
+                <input type="email" name="email" required className="input" />
             </div>
 
-            <div>
-                <label htmlFor="password">Password</label>
-                <input type={showPassword ? "text" : "password"} name="password" required autoComplete="off" />
-                <div>
-                    <input type="checkbox" name="showPassword"
-                        onChange={(e) => setShowPassword(e.target.checked)}
-                    />
-                    <label htmlFor="showPassword">Show Password</label>
+            <div className="form-group">
+                <label htmlFor="password" className="label">Password</label>
+                <input type={showPassword ? "text" : "password"} name="password" required autoComplete="off" className="input" />
+                <div className="show-password">
+                    <input type="checkbox" name="showPassword" onChange={(e) => setShowPassword(e.target.checked)} />
+                    <label htmlFor="showPassword" className="label">Show Password</label>
                 </div>
             </div>
 
-            <div>
-                <button>Login</button>
-                <button>Cancel</button>
+            <div className="button-group">
+                <button className="login-button">Login</button>
+                <button className="cancel-button">Cancel</button>
             </div>
 
-            <p>If you do not have an account, <NavLink to="/signup">Signup here</NavLink></p>
+            <p className="signup-p">If you do not have an account, <NavLink to="/signup" className="signup-a">Signup here</NavLink></p>
         </form>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;
