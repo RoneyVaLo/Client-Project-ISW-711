@@ -1,3 +1,7 @@
 .App {
     display: flex;
 }
+
+.home-main {
+    width: 100%;
+}
