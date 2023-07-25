@@ -2,12 +2,14 @@ import axios from "axios";
 import DataTable from "../components/DataTable/DataTable";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ViewPrompt = () => {
 
+    const navigate = useNavigate();
+
     const headers = ["Name", "Type", "Tags"];
     const [dataPrompts, setDataPrompts] = useState([]);
-    const [idPrompts, setIdPrompts] = useState([]);
 
 
     // Get the prompts of the database
@@ -22,18 +24,17 @@ const ViewPrompt = () => {
                 const response = await axios.get("http://localhost:3001/api/prompts", config);
                 // console.log(response.data);
                 const newDataPrompts = response.data.map((prompt) => {
-                    const { name, type, tags } = prompt;
+                    // console.log(prompt.tags)
+                    // const { name, type, tags } = prompt;
+                    const { type, tags } = prompt;
                     const tagsString = tags.join(" - ");
                     const formattedType = type.charAt(0).toUpperCase() + type.slice(1);
-                    return [name, formattedType, tagsString];
+                    prompt.type = formattedType;
+                    prompt.tags = tagsString;
+                    // console.log(prompt.tags)
+                    return prompt; // [name, formattedType, tagsString];
                 });
                 setDataPrompts(newDataPrompts);
-
-                const newIdPrompts = response.data.map((prompt) => {
-                    const { _id } = prompt;
-                    return _id;
-                });
-                setIdPrompts(newIdPrompts);
             } catch (error) {
                 console.log(error);
             }
@@ -51,14 +52,29 @@ const ViewPrompt = () => {
     */
 
     // TODO: Gestionar la redirección de páginas y las demás gestiones demás
+    // TODO: Crear las vistas para poder hacer los demás procedimientos
     const handleRun = (idPrompt) => {
-        console.log("Está corriendo");
-        console.log("ID:", idPrompt);
+        // console.log("Está corriendo");
+        // console.log("ID:", idPrompt);
+
+        const currentPrompt = dataPrompts.filter(prompt => prompt._id === idPrompt);
+        // console.log(currentPrompt);
+
+        navigate("/prompt/run", {
+            state: {
+                currentPrompt: currentPrompt[0]
+            }
+        });
+    };
+
+    const handleAdd = () => {
+        navigate("/prompt/add-edit");
     };
 
     const handleEdit = async (idPrompt) => {
         console.log("Está editando");
         console.log("ID:", idPrompt);
+        navigate("/prompt/add-edit");
     };
 
     // Asynchronous function to handle the deletion of a specific prompt
@@ -102,29 +118,28 @@ const ViewPrompt = () => {
 
 
     return (
-        <div>
+        <div className="main-container">
             <div className="header-viewPrompts">
                 <div>
                     <h2>Prompts</h2>
                 </div>
                 <div>
-                    <button>New</button>
+                    <button onClick={handleAdd} className="new-btn">New</button>
                 </div>
             </div>
             <div className="data-viewPrompts">
                 <DataTable
                     headers={headers}
                     data={dataPrompts}
-                    ids={idPrompts}
                     handleRun={handleRun}
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
                 />
             </div>
-            <div className="header-viewPrompts remove-margin">
+            <div className="header-viewPrompts">
                 <div></div>
                 <div>
-                    <button>New</button>
+                    <button onClick={handleAdd} className="new-btn">New</button>
                 </div>
             </div>
         </div>
