@@ -5,12 +5,9 @@
 }
 
 nav {
-    // height: 100vh;
-    // float: left;
     display: flex;
     flex-direction: column;
     gap: 1em;
-    // margin-right: 1em;
     background-color: #EBEBEB;
     
     .menu {
@@ -21,7 +18,6 @@ nav {
         padding: 0 10px;
 
         &__link {
-            // padding: .8em;
             border-radius: 10px;
             cursor: pointer;
 
