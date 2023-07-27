@@ -6,11 +6,11 @@ const RunPrompt = () => {
 
     const location = useLocation();
 
-    const { type, data } = location.state.currentPrompt;
+    const { name, type, data } = location.state.currentPrompt;
 
     return (
         <>
-        <RunPromptComponent type={type} data={data} />
+        <RunPromptComponent name={name} type={type} data={data} />
         </>
     );
 };
