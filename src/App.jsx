@@ -13,6 +13,8 @@ import Register from "./pages/Register";
 import ViewPrompt from './pages/ViewPrompt';
 import RunPrompt from './pages/RunPrompt';
 import Add_EditPrompts from './pages/Add-EditPrompts';
+import ViewUsers from './pages/ViewUsers';
+import Add_EditUsers from './pages/Add-EditUsers';
 
 function App() {
 
@@ -51,12 +53,12 @@ function App() {
         },
         {
           path: "/user",
-          element: <div>USERS</div>,
+          element: <ViewUsers />,
           errorElement: <Error />
         },
         {
           path: "/user/add-edit",
-          element: <div>Add-Edit USERS</div>,
+          element: <Add_EditUsers />,
           errorElement: <Error />
         }
       ]
