@@ -36,7 +36,7 @@ const PromptForm = () => {
                 break;
             case "images":
                 dataPrompt.prompt = "";
-                dataPrompt.quantity = 1;
+                dataPrompt.n = 1;
                 dataPrompt.size = "1024x1024"
                 break;
             case "completion":
@@ -66,7 +66,7 @@ const PromptForm = () => {
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target;
-        dataPrompt[name] = value;
+        dataPrompt[name] = ((name === "temperature")) ? Number(value) : value;
     };
 
     const handleChangePromptName = (e) => {
@@ -119,10 +119,10 @@ const PromptForm = () => {
             </div>
 
             <div className="rows">
-                <label htmlFor="quantity">Quantity</label>
-                <input type="number" name="quantity" id="quantity" min={1} max={10}
+                <label htmlFor="n">Quantity</label>
+                <input type="number" name="n" id="quantity" min={1} max={10}
                     defaultValue={(currentPrompt && ((currentPrompt.type.toLowerCase()) === typePrompt)) ?
-                        Number(currentPrompt.data.quantity) : 1}
+                        Number(currentPrompt.data.n) : 1}
                     onChange={handleChangeInput}
                 />
             </div>
