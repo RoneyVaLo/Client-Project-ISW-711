@@ -94,6 +94,20 @@
                 resize: none;
                 font-size: 16px;
             }
+
+            &__images {
+                border: 1px solid #dddddd;
+                border-radius: 4px;
+                padding: .8em;
+                display: flex;
+                flex-wrap: wrap;
+                gap: .8em;
+
+                img {
+                    width: 400px;
+                    height: auto;
+                }
+            }
         }
 
         /* Estilos para la sección "back" */
