@@ -22,17 +22,15 @@ const ViewPrompt = () => {
                     }
                 };
                 const response = await axios.get("http://localhost:3001/api/prompts", config);
-                // console.log(response.data);
+                
                 const newDataPrompts = response.data.map((prompt) => {
-                    // console.log(prompt.tags)
-                    // const { name, type, tags } = prompt;
                     const { type, tags } = prompt;
                     const tagsString = tags.join(" - ");
                     const formattedType = type.charAt(0).toUpperCase() + type.slice(1);
                     prompt.type = formattedType;
                     prompt.tags = tagsString;
-                    // console.log(prompt.tags)
-                    return prompt; // [name, formattedType, tagsString];
+                    
+                    return prompt;
                 });
                 setDataPrompts(newDataPrompts);
             } catch (error) {
@@ -41,28 +39,14 @@ const ViewPrompt = () => {
         };
 
         fetchData();
-    }, []);
+    }, [dataPrompts]);
 
-    // console.log({idPrompts});
-
-    /*
-    ? Estos son los datos para la vista de usuarios 
-    * const headers2 = ["Name", "Email", "Status"];
-    * const data2 = [["Bladimir", "bladimir.ab@gmail.com", "Pending"], ["Fulanito", "detal@gmail.com", "Active"]]; 
-    */
-
-    // TODO: Gestionar la redirección de páginas y las demás gestiones demás
-    // TODO: Crear las vistas para poder hacer los demás procedimientos
     const handleRun = (idPrompt) => {
-        // console.log("Está corriendo");
-        // console.log("ID:", idPrompt);
-
-        const currentPrompt = dataPrompts.filter(prompt => prompt._id === idPrompt);
-        // console.log(currentPrompt);
+        const currentPrompt = dataPrompts.find(prompt => prompt._id === idPrompt);
 
         navigate("/prompt/run", {
             state: {
-                currentPrompt: currentPrompt[0]
+                currentPrompt
             }
         });
     };
@@ -72,9 +56,13 @@ const ViewPrompt = () => {
     };
 
     const handleEdit = async (idPrompt) => {
-        console.log("Está editando");
-        console.log("ID:", idPrompt);
-        navigate("/prompt/add-edit");
+        const currentPrompt = dataPrompts.find(prompt => prompt._id === idPrompt);
+
+        navigate("/prompt/add-edit", {
+            state: {
+                currentPrompt
+            }
+        });
     };
 
     // Asynchronous function to handle the deletion of a specific prompt
