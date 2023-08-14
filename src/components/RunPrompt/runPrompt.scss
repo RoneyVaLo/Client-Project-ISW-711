@@ -45,6 +45,9 @@
         /* Estilos para la sección "run" */
         .run {
             margin-top: 5em;
+            display: flex;
+            gap: 1em;
+            align-items: center;
 
             /* Estilos para el botón "Run" */
             button {

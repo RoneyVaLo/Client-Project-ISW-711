@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import './runPrompt.scss';
 import { useState } from "react";
+import Loader2 from "../Loaders/Loader2";
 
 const RunPrompt = ({ currentPrompt }) => {
 
@@ -12,8 +13,11 @@ const RunPrompt = ({ currentPrompt }) => {
 
     const [promptResponse, setPromptResponse] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleRunPrompt = () => {
         // console.log(data);
+        setIsLoading(true);
         let url = "http://localhost:3001/api/";
         let body = {
             data
@@ -45,11 +49,14 @@ const RunPrompt = ({ currentPrompt }) => {
                 await axios.patch(`http://localhost:3001/api/prompts?id=${_id}`, body, config)
 
                 setPromptResponse(response.data);
+                setIsLoading(false);
             })
             .catch(err => {
                 console.log(err)
                 toast.error("Error running the prompt");
+                setIsLoading(false);
             });
+
     };
 
     return (
@@ -87,10 +94,17 @@ const RunPrompt = ({ currentPrompt }) => {
                 </section>
 
                 <section className="run">
-                    <button onClick={handleRunPrompt}>
-                        Run
-                        <ion-icon name="play-circle-sharp"></ion-icon>
+                    <button onClick={handleRunPrompt} disabled={isLoading}>
+                        {isLoading ?
+                            "Loading..."
+                            :
+                            (<>
+                                Run
+                                <ion-icon name="play-circle-sharp"></ion-icon>
+                            </>)
+                        }
                     </button>
+                    {isLoading && <div><Loader2 /></div>}
                 </section>
 
                 <section className="results">
@@ -112,7 +126,7 @@ const RunPrompt = ({ currentPrompt }) => {
                     <button onClick={() => navigate("/")}>Back</button>
                 </section>
             </div>
-        </div>
+        </div >
     );
 };
 

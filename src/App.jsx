@@ -1,7 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { useAuth } from './context/AuthContext';
 import { useEffect, useState } from 'react';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+
+import { useAuth } from './context/AuthContext';
 
 import './App.css';
 
@@ -22,8 +23,9 @@ function App() {
 
   const [isLogin, setIsLogin] = useState(false);
 
+
   useEffect(() => {
-    setIsLogin(auth.currentUser !== "");
+    setIsLogin((auth.currentUser) && (auth.currentUser !== ""));
   }, [auth.currentUser])
 
   const router = createBrowserRouter([
@@ -34,11 +36,11 @@ function App() {
       children: [
         {
           path: "/",
-          element: isLogin ? <ViewPrompt /> : <Login />
+          element: isLogin ? ((auth.currentUser?.role === "admin") ? <Navigate to="/user" /> : <ViewPrompt />) : <Login />
         },
         {
           path: "/signup",
-          element: <Register />,
+          element: isLogin ? <Navigate to="/" /> : <Register />,
           errorElement: <Error />
         },
         {
@@ -53,12 +55,12 @@ function App() {
         },
         {
           path: "/user",
-          element: <ViewUsers />,
+          element: (auth.currentUser?.role === "admin") ? <ViewUsers /> : <Navigate to="/" />,
           errorElement: <Error />
         },
         {
           path: "/user/add-edit",
-          element: <Add_EditUsers />,
+          element: (auth.currentUser?.role === "admin") ? <Add_EditUsers /> : <Navigate to="/" />,
           errorElement: <Error />
         }
       ]

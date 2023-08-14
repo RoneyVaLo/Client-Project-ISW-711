@@ -2,13 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../../context/AuthContext";
-
-// import './registerForm.scss';
+import { SHA256 } from "crypto-js";
 
 const RegisterForm = () => {
-
-    // const auth = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -22,14 +18,16 @@ const RegisterForm = () => {
         const { first_name, last_name, age, email, password, repeatPassword } = e.target;
 
         if (password.value === repeatPassword.value) {
-            // TODO: Cifrar la contraseña antes de enviarla al servidor, igual descifrar a la hora de hacer login
+            
+            const hashedPassword = SHA256(password.value).toString();
+            
             axios.post("http://localhost:3001/api/users",
                 {
                     first_name: first_name.value,
                     last_name: last_name.value,
                     age: age.value,
                     email: email.value,
-                    password: password.value
+                    password: hashedPassword
                 })
                 .then((response) => {
                     console.log(response);
@@ -45,11 +43,6 @@ const RegisterForm = () => {
             toast.error("Passwords do not match");
         }
     };
-
-    /* if (auth.currentUser !== "") {
-        navigate("/");
-        return window.location.reload();
-    } */
 
     return (
         <form onSubmit={handleSubmit} className="registration-form">
@@ -77,7 +70,11 @@ const RegisterForm = () => {
 
             <div className="form-group">
                 <label htmlFor="password" className="label">Password</label>
-                <input type={showPassword ? "text" : "password"} name="password" required autoComplete="off" className="input" />
+                <input type={showPassword ? "text" : "password"} name="password" required 
+                autoComplete="off" 
+                className="input" 
+                minLength={8}
+                />
                 <div className="show-password">
                     <input type="checkbox" name="showPassword" onChange={(e) => setShowPassword(e.target.checked)} />
                     <label htmlFor="showPassword" className="label">Show Password</label>
@@ -91,6 +88,7 @@ const RegisterForm = () => {
                     name="repeatPassword"
                     autoComplete="off"
                     className="input"
+                    minLength={8}
                 />
                 <div className="show-password">
                     <input

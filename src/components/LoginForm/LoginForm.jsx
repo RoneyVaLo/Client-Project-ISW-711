@@ -2,10 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
+import { SHA256 } from "crypto-js";
 import { useAuth } from "../../context/AuthContext";
 import './loginForm.scss';
 
-// TODO: Falta agregar estilos
 const LoginForm = () => {
 
     const auth = useAuth();
@@ -16,10 +16,12 @@ const LoginForm = () => {
         e.preventDefault();
         const { email, password } = e.target;
 
+        const hashedPassword = SHA256(password.value).toString();
+
         axios.post("http://localhost:3001/api/login",
             {
                 email: email.value,
-                password: password.value
+                password: hashedPassword
             })
             .then(async (response) => {
                 // console.log(response.data?.session);
@@ -49,7 +51,10 @@ const LoginForm = () => {
 
             <div className="form-group">
                 <label htmlFor="password" className="label">Password</label>
-                <input type={showPassword ? "text" : "password"} name="password" required autoComplete="off" className="input" />
+                <input type={showPassword ? "text" : "password"} name="password" required
+                    autoComplete="off"
+                    className="input"
+                    minLength={8} />
                 <div className="show-password">
                     <input type="checkbox" name="showPassword" onChange={(e) => setShowPassword(e.target.checked)} />
                     <label htmlFor="showPassword" className="label">Show Password</label>

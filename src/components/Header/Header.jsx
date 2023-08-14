@@ -2,11 +2,11 @@ import './header.scss';
 import { useAuth } from '../../context/AuthContext';
 
 import profileIcon from '../../assets/profile.svg';
+import { toast } from 'react-hot-toast';
 
 const Header = () => {
     const auth = useAuth();
     const { currentUser } = auth;
-    // console.log(currentUser);
 
 
     return (
@@ -29,6 +29,15 @@ const Header = () => {
                             src={(currentUser.profile_image !== "") ? "https://w.forfun.com/fetch/f6/f6b5d2a50a42e6d0ee10c119c55b002a.jpeg" : profileIcon}
                             alt="User image"
                         />
+                    </div>
+                    <div>
+                        <button onClick={
+                            () => {
+                                sessionStorage.removeItem("token");
+                                toast.success("Logout succesful!!");
+                                window.location.reload();
+                            }
+                        }>LogOut</button>
                     </div>
                 </div>
             }

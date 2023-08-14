@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import LabelGenerator from "../LabelGenerator/LabelGenerator";
+import { useAuth } from '../../context/AuthContext';
 
 const PromptForm = () => {
+
+    const auth = useAuth();
+    const { currentUser } = auth;
 
     const location = useLocation();
 
@@ -218,6 +222,7 @@ const PromptForm = () => {
 
 
         const body = {
+            user: currentUser._id,
             name: ((promptName !== "") ? promptName : (inputName.value)),
             type: types.value,
             data: dataPrompt,

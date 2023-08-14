@@ -3,8 +3,13 @@ import DataTable from "../components/DataTable/DataTable";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useAxios from "../hooks/useAxios";
+import Loader1 from "../components/Loaders/Loader1";
 
 const ViewUsers = () => {
+
+    const url = 'http://localhost:3001/api/users';
+    const { data, loading, error } = useAxios(url);
 
     const navigate = useNavigate();
 
@@ -15,23 +20,19 @@ const ViewUsers = () => {
 
     // Get the prompts of the database
     useEffect(() => {
+        console.log(updateUsers);
         const fetchData = async () => {
             try {
-                const config = {
-                    headers: {
-                        authorization: `Bearer ${sessionStorage.token}`
-                    }
-                };
-                const response = await axios.get("http://localhost:3001/api/users", config);
-                
-                setDataUsers(response.data);
+                if (data) {
+                    setDataUsers(data);
+                }
             } catch (error) {
                 console.log(error);
             }
         };
 
         fetchData();
-    }, [updateUsers]);
+    }, [data, updateUsers]);
 
     const handleAdd = () => {
         navigate("/user/add-edit");
@@ -47,7 +48,7 @@ const ViewUsers = () => {
         });
     };
 
-    
+
     const handleDelete = async (idUser) => {
         const responseUser = confirm("Are you sure to delete?");
 
@@ -72,8 +73,8 @@ const ViewUsers = () => {
                 // Update the local state (dataUsers) to reflect the deleted user
                 // console.log(userToDelete);
                 const updatedDataUsers = dataUsers.filter(user => user._id !== userToDelete._id);
-                setUpdateUsers(true);
                 setDataUsers(updatedDataUsers);
+                setUpdateUsers(!updateUsers);
 
                 // Display a success notification using the "toast" library
                 toast.success('User deleted successfully');
@@ -88,6 +89,10 @@ const ViewUsers = () => {
     };
 
 
+    if (error) {
+        return <p>Error: {error.message}</p>;
+    }
+
     return (
         <div className="main-container">
             <div className="header-viewPrompts">
@@ -99,12 +104,17 @@ const ViewUsers = () => {
                 </div>
             </div>
             <div className="data-viewPrompts">
-                <DataTable
-                    headers={headers}
-                    data={dataUsers}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                />
+                {loading ? <Loader1 /> :
+                    (dataUsers.length > 0) ?
+                        < DataTable
+                            headers={headers}
+                            data={dataUsers}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                        />
+                            :
+                        <div>Not have data</div>
+                }
             </div>
             <div className="header-viewPrompts">
                 <div></div>

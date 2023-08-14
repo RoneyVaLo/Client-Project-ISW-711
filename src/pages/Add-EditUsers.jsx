@@ -1,9 +1,9 @@
-import PromptUser from "../components/PromptUser/PromptUser"
+import UserForm from "../components/UserForm/UserForm"
 
 const Add_EditUsers = () => {
     return (
         <div>
-            <PromptUser />
+            <UserForm />
         </div>
     )
 }

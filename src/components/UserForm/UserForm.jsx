@@ -1,14 +1,16 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { SHA256 } from 'crypto-js';
 
-const PromptUser = () => {
+
+const UserForm = () => {
 
     const location = useLocation();
 
     const currentUser = location.state ? location.state.currentUser : false;
 
-    let dataPrompt = (currentUser ? (currentUser.data) : false);
+    let dataPrompt = (currentUser ? (currentUser.data) : {});
 
 
     const navigate = useNavigate();
@@ -25,7 +27,7 @@ const PromptUser = () => {
         axios.post('http://localhost:3001/api/users', body, config)
             .then((response) => {
                 toast.success(`User ${response.statusText}`);
-                navigate("/");
+                navigate("/user");
             })
             .catch(err => {
                 console.log(err)
@@ -38,25 +40,31 @@ const PromptUser = () => {
             .then(response => {
                 console.log(response.statusText);
                 toast.success("User Updated");
-                navigate("/");
+                navigate("/user");
             })
             .catch(err => {
                 toast.error(err.response.statusText);
             });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { first_name, last_name, email, role, age, password, verified } = e.target;
+        const { first_name, last_name, email, roles, age, password, verified } = e.target;
+        // console.log(verified.checked)
+        let hashedPassword = password.value;
+
+        if (password.value !== "") {
+            hashedPassword = SHA256(password.value).toString();
+        }
 
         const body = {
             first_name: first_name.value,
             last_name: last_name.value,
             email: email.value,
-            role: role.value,
+            role: roles.value,
             age: age.value,
-            password: password.value,
+            password: hashedPassword,
             verified: verified.checked
         };
 
@@ -109,8 +117,8 @@ const PromptUser = () => {
                     </div>
 
                     <div className="rows type">
-                        <label htmlFor="types">Role</label>
-                        <select name="types" id="types"
+                        <label htmlFor="roles">Role</label>
+                        <select name="roles" id="roles"
                             defaultValue={currentUser ? (currentUser.role) : "user"}
                         >
                             <option value="user">User</option>
@@ -130,12 +138,12 @@ const PromptUser = () => {
                     </div>
                     <div className="rows name">
                         <label htmlFor="password">Password</label>
-                        <input type="text" name="age" required/>
+                        <input type="text" name="password" required={!currentUser} />
                     </div>
                 </div>
 
                 <div className="row">
-                    <div className="rows name">
+                    <div className="rows">
                         <input type="checkbox" name="verified"
                             defaultChecked={currentUser ? currentUser.verified : false}
                         />
@@ -147,11 +155,11 @@ const PromptUser = () => {
 
                 <div className="row buttons">
                     <button className="add-prompt">{`${currentUser ? "Update" : "Add"} user`}</button>
-                    <button className="cancel" onClick={() => navigate('/')}>Cancel</button>
+                    <button className="cancel" onClick={() => navigate('/user')}>Cancel</button>
                 </div>
             </form>
         </div>
     );
 };
 
-export default PromptUser;
+export default UserForm;
