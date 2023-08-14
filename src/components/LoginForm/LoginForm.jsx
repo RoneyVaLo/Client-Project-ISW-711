@@ -17,6 +17,7 @@ const LoginForm = () => {
         const { email, password } = e.target;
 
         const hashedPassword = SHA256(password.value).toString();
+        // console.log(hashedPassword);
 
         axios.post("http://localhost:3001/api/login",
             {
@@ -24,11 +25,22 @@ const LoginForm = () => {
                 password: hashedPassword
             })
             .then(async (response) => {
-                // console.log(response.data?.session);
-                sessionStorage.setItem("token", response.data.session.token);
+                // console.log(response.data?.token);
+                sessionStorage.setItem("token", response.data?.token);
 
                 // Get user data for use across all apps
-                await auth.login(response.data.session.user);
+                const body = {
+                    email: email.value
+                };
+                const config = {
+                    headers: {
+                        authorization: `Bearer ${sessionStorage.token}`
+                    }
+                };
+
+                const { data } = await axios.post(`http://localhost:3001/api/users`, body, config);
+                const { _id: userId } = data;
+                await auth.login(userId);
 
                 toast.success("Login successfull");
             })
@@ -54,7 +66,7 @@ const LoginForm = () => {
                 <input type={showPassword ? "text" : "password"} name="password" required
                     autoComplete="off"
                     className="input"
-                    minLength={8} />
+                    /* minLength={8} */ />
                 <div className="show-password">
                     <input type="checkbox" name="showPassword" onChange={(e) => setShowPassword(e.target.checked)} />
                     <label htmlFor="showPassword" className="label">Show Password</label>
@@ -63,7 +75,7 @@ const LoginForm = () => {
 
             <div className="button-group">
                 <button className="login-button">Login</button>
-                <button className="cancel-button">Cancel</button>
+                
             </div>
 
             <p className="signup-p">If you do not have an account, <NavLink to="/signup" className="signup-a">Signup here</NavLink></p>

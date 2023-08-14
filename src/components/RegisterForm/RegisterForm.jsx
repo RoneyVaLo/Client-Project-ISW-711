@@ -21,7 +21,7 @@ const RegisterForm = () => {
             
             const hashedPassword = SHA256(password.value).toString();
             
-            axios.post("http://localhost:3001/api/users",
+            axios.post("http://localhost:3001/api/user/register",
                 {
                     first_name: first_name.value,
                     last_name: last_name.value,
