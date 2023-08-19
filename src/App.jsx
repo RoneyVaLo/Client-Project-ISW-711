@@ -66,7 +66,7 @@ function App() {
         },
         {
           path: "/user/add-edit",
-          element: (auth.currentUser?.role === "admin") ? <Add_EditUsers /> : <Navigate to="/" />,
+          element: <Add_EditUsers />,
           errorElement: <Error />
         }
       ]
