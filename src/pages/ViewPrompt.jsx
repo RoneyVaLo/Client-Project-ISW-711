@@ -59,7 +59,8 @@ const ViewPrompt = () => {
 
         navigate("/prompt/add-edit", {
             state: {
-                currentPrompt
+                currentPrompt,
+                pathBack: "/"
             }
         });
     };
