@@ -14,6 +14,7 @@ const PromptForm = () => {
     const location = useLocation();
 
     const currentPrompt = location.state ? location.state.currentPrompt : false;
+    const pathBack = location.state ? location.state.pathBack : "";
 
     const [typePrompt, setTypePrompt] = useState((currentPrompt ? (currentPrompt.type.toLowerCase()) : ""));
 
@@ -277,7 +278,7 @@ const PromptForm = () => {
 
                 <div className="row buttons">
                     <button className="add-prompt">{`${currentPrompt ? "Update" : "Add"} prompt`}</button>
-                    <button className="cancel" onClick={() => navigate('/')}>Cancel</button>
+                    <button className="cancel" onClick={() => navigate(pathBack)}>Cancel</button>
                 </div>
             </form>
         </div>
