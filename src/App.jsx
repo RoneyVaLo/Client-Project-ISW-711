@@ -16,6 +16,7 @@ import RunPrompt from './pages/RunPrompt';
 import Add_EditPrompts from './pages/Add-EditPrompts';
 import ViewUsers from './pages/ViewUsers';
 import Add_EditUsers from './pages/Add-EditUsers';
+import PromptSearch from './pages/PromptSearch';
 
 function App() {
 
@@ -54,8 +55,13 @@ function App() {
           errorElement: <Error />
         },
         {
+          path: '/search',
+          element: <PromptSearch />,
+          errorElement: <Error />
+        },
+        {
           path: "/user",
-          element: (auth.currentUser?.role === "admin") ? <ViewUsers /> : <Navigate to="/" />,
+          element: <ViewUsers />,
           errorElement: <Error />
         },
         {
