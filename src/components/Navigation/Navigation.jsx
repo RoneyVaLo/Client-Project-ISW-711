@@ -20,8 +20,6 @@ const Navigation = () => {
     }, [location]);
 
 
-    // TODO: Validar que cuando este en alguna ruta de los Prompts siga seleccionado el botón de prompts
-    // TODO: Igual con los usuarios, que el botón siga seleccionado aunque sea crear o ver
     return (
         <nav>
             <div className="icon-menu"><ion-icon name="menu-outline"></ion-icon></div>
@@ -40,6 +38,17 @@ const Navigation = () => {
 
                 {auth.currentUser !== "" &&
                     <>
+                        <div className="menu__link">
+                            <input type="radio" name="links" id="search"
+                                value="/search"
+                                onChange={(e) => ((e.target.checked) && navigate("/search"))}
+                                checked={(selectedButton === '/search')}
+                            />
+                            <label htmlFor="search">
+                                <ion-icon name="search-sharp"></ion-icon>
+                            </label>
+                        </div>
+
                         <div className="menu__link">
                             <input type="radio" name="links" id="prompts"
                                 value="/"
