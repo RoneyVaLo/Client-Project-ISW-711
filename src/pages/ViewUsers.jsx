@@ -5,8 +5,12 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import Loader1 from "../components/Loaders/Loader1";
+import { useAuth } from "../context/AuthContext";
 
 const ViewUsers = () => {
+
+    const { currentUser } = useAuth();
+
 
     const url = 'http://localhost:3001/api/users';
     const { data, loading, error } = useAxios(url);
@@ -20,11 +24,12 @@ const ViewUsers = () => {
 
     // Get the prompts of the database
     useEffect(() => {
-        console.log(updateUsers);
+        // console.log(currentUser._id)
         const fetchData = async () => {
             try {
                 if (data) {
-                    setDataUsers(data);
+                    const userDataFiltered = data.filter(user => user._id === currentUser._id);
+                    setDataUsers((currentUser.role === 'admin') ? data : userDataFiltered);
                 }
             } catch (error) {
                 console.log(error);
@@ -50,40 +55,42 @@ const ViewUsers = () => {
 
 
     const handleDelete = async (idUser) => {
-        const responseUser = confirm("Are you sure to delete?");
+        if (currentUser.role === 'admin') {
+            const responseUser = confirm("Are you sure to delete?");
 
-        if (responseUser) {
-            try {
-                // Configuration for headers to include the authorization token in the request
-                const config = {
-                    headers: {
-                        authorization: `Bearer ${sessionStorage.token}`
-                    }
-                };
+            if (responseUser) {
+                try {
+                    // Configuration for headers to include the authorization token in the request
+                    const config = {
+                        headers: {
+                            authorization: `Bearer ${sessionStorage.token}`
+                        }
+                    };
 
-                // Create the URL for the request
-                const url = `http://localhost:3001/api/users?id=${idUser}`;
+                    // Create the URL for the request
+                    const url = `http://localhost:3001/api/users?id=${idUser}`;
 
-                // Fetch the details of the user to be deleted from the server using a GET request
-                const { data: userToDelete } = await axios.get(url, config);
+                    // Fetch the details of the user to be deleted from the server using a GET request
+                    const { data: userToDelete } = await axios.get(url, config);
 
-                // Send a DELETE request to the server to delete the user
-                await axios.delete(url, config);
+                    // Send a DELETE request to the server to delete the user
+                    await axios.delete(url, config);
 
-                // Update the local state (dataUsers) to reflect the deleted user
-                // console.log(userToDelete);
-                const updatedDataUsers = dataUsers.filter(user => user._id !== userToDelete._id);
-                setDataUsers(updatedDataUsers);
-                setUpdateUsers(!updateUsers);
+                    // Update the local state (dataUsers) to reflect the deleted user
+                    // console.log(userToDelete);
+                    const updatedDataUsers = dataUsers.filter(user => user._id !== userToDelete._id);
+                    setDataUsers(updatedDataUsers);
+                    setUpdateUsers(!updateUsers);
 
-                // Display a success notification using the "toast" library
-                toast.success('User deleted successfully');
-            } catch (error) {
-                // If an error occurs during the request, log the error to the console
-                console.log(error);
+                    // Display a success notification using the "toast" library
+                    toast.success('User deleted successfully');
+                } catch (error) {
+                    // If an error occurs during the request, log the error to the console
+                    console.log(error);
 
-                // Display an error message to the user using the server's response (if available)
-                toast.error(error.response?.data?.error || 'An error occurred while deleting the user.');
+                    // Display an error message to the user using the server's response (if available)
+                    toast.error(error.response?.data?.error || 'An error occurred while deleting the user.');
+                }
             }
         }
     };
@@ -112,7 +119,7 @@ const ViewUsers = () => {
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
                         />
-                            :
+                        :
                         <div>Not have data</div>
                 }
             </div>
