@@ -56,6 +56,7 @@ const PromptSearch = () => {
                 })
                 .catch(error => {
                     console.log(error);
+                    toast.error(error.response.statusText)
                 });
         } else {
             setDataPrompts([])
