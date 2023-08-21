@@ -27,12 +27,8 @@ export const AuthProvider = ({ children }) => {
                     }
                 };
 
-                // Make a GET request to the server to fetch session data for the authenticated user.
-                const { data } = await axios.get("http://localhost:3001/api/session", config);
-
-                // Use the user ID from the session data to fetch the user's details.
-                // Another GET request is made to the server to get the user's information.
-                const user = await axios.get(`http://localhost:3001/api/users?id=${data.user}`, config);
+                // Make a GET request to the server to get the user's information.
+                const user = await axios.get(`http://localhost:3001/api/user`, config);
 
                 // Set the current user state with the data received from the server.
                 setCurrentUser(user.data)
@@ -46,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
     // State variable to hold the current user's data
     const [currentUser, setCurrentUser] = useState('');
+
 
     // Function to perform user login using the provided user ID
     const login = async (userId) => {
