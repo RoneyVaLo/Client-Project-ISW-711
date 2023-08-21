@@ -9,7 +9,6 @@ const UserVerification = () => {
 
     const [haveError, setHaveError] = useState(false);
     const { id } = useParams();
-    console.log(id)
 
     const verifyUser = () => {
         try {
