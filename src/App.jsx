@@ -17,6 +17,7 @@ import Add_EditPrompts from './pages/Add-EditPrompts';
 import ViewUsers from './pages/ViewUsers';
 import Add_EditUsers from './pages/Add-EditUsers';
 import PromptSearch from './pages/PromptSearch';
+import UserVerification from './pages/UserVerification';
 
 function App() {
 
@@ -70,6 +71,11 @@ function App() {
           errorElement: <Error />
         }
       ]
+    },
+    {
+      path: "/verification/:id",
+      element: <UserVerification />,
+      errorElement: <Error />,
     }
   ]);
 
