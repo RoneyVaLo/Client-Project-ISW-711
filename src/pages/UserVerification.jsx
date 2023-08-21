@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { toast } from "react-hot-toast";
 
 import '../Sass/userVerification.scss';
 
 const UserVerification = () => {
-    const navigate = useNavigate();
 
+    const [haveError, setHaveError] = useState(false);
     const { id } = useParams();
+    console.log(id)
 
     const verifyUser = () => {
         try {
@@ -24,20 +25,32 @@ const UserVerification = () => {
             axios.patch(`http://localhost:3001/api/users/verification-email?id=${id}`, body, config)
                 .then(response => {
                     console.log(response.data.message);
+                    setHaveError(false);
                     toast.success(response.data.message);
-                    navigate("/");
+                    setTimeout(() => {
+                        window.location.href = 'http://localhost:5173';
+                    }, 2000);
                 })
                 .catch(err => {
-                    toast.error(err.response.statusText);
+                    console.log(err.response.data.error);
+                    setHaveError(true);
+                    toast.error(err.response.data.error);
                 });
         } catch (err) {
             console.log(err);
+            setHaveError(true);
         }
     };
 
     useEffect(() => {
         verifyUser();
     }, []);
+
+    if (haveError) {
+        return (
+            <div></div>
+        );
+    }
 
     return (
         <div className="verification-container">
