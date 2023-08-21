@@ -1,10 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import { SHA256 } from "crypto-js";
 
-const RegisterForm = () => {
+const RegisterForm = ({ saveUser, isLoading }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -18,27 +18,17 @@ const RegisterForm = () => {
         const { first_name, last_name, age, email, password, repeatPassword } = e.target;
 
         if (password.value === repeatPassword.value) {
-            
             const hashedPassword = SHA256(password.value).toString();
-            
-            axios.post("http://localhost:3001/api/user/register",
-                {
-                    first_name: first_name.value,
-                    last_name: last_name.value,
-                    age: age.value,
-                    email: email.value,
-                    password: hashedPassword
-                })
-                .then((response) => {
-                    console.log(response);
-                    toast.success("Register successfull");
-                    navigate('/');
-                })
-                .catch(err => {
-                    console.log(err.message);
-                    let errorMessage = err.response ? err.response.data.error : err.message
-                    toast.error(errorMessage);
-                });
+            const userData =
+            {
+                first_name: first_name.value,
+                last_name: last_name.value,
+                age: age.value,
+                email: email.value,
+                password: hashedPassword
+            };
+
+            saveUser(userData);
         } else {
             toast.error("Passwords do not match");
         }
@@ -70,10 +60,10 @@ const RegisterForm = () => {
 
             <div className="form-group">
                 <label htmlFor="password" className="label">Password</label>
-                <input type={showPassword ? "text" : "password"} name="password" required 
-                autoComplete="off" 
-                className="input" 
-                minLength={8}
+                <input type={showPassword ? "text" : "password"} name="password" required
+                    autoComplete="off"
+                    className="input"
+                    minLength={8}
                 />
                 <div className="show-password">
                     <input type="checkbox" name="showPassword" onChange={(e) => setShowPassword(e.target.checked)} />
@@ -101,7 +91,9 @@ const RegisterForm = () => {
             </div>
 
             <div className="button-group">
-                <button className="register-button">Register</button>
+                <button className="register-button" disabled={isLoading}>
+                    {isLoading ? 'Registering...' : 'Register'}
+                </button>
                 <button className="cancel-button" onClick={() => navigate("/")}>Cancel</button>
             </div>
         </form>
