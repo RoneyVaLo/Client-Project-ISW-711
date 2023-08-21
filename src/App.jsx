@@ -47,27 +47,27 @@ function App() {
         },
         {
           path: "/prompt/run",
-          element: <RunPrompt />,
+          element: isLogin ? <RunPrompt /> : <Navigate to="/" />,
           errorElement: <Error />
         },
         {
           path: "/prompt/add-edit",
-          element: <Add_EditPrompts />,
+          element: isLogin ? <Add_EditPrompts />: <Navigate to="/" />,
           errorElement: <Error />
         },
         {
           path: '/search',
-          element: <PromptSearch />,
+          element: isLogin ? <PromptSearch /> : <Navigate to="/" />,
           errorElement: <Error />
         },
         {
           path: "/user",
-          element: <ViewUsers />,
+          element: isLogin ? <ViewUsers /> : <Navigate to="/" />,
           errorElement: <Error />
         },
         {
           path: "/user/add-edit",
-          element: <Add_EditUsers />,
+          element: isLogin ? <Add_EditUsers /> : <Navigate to="/" />,
           errorElement: <Error />
         }
       ]
