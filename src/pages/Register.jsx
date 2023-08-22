@@ -11,7 +11,8 @@ const Register = () => {
 
     const saveUser = (userData) => {
         setIsLoading(true);
-        const { first_name, last_name, age, email, password } = userData;
+        // TODO: Agregar el teléfono
+        const { first_name, last_name, age, email, password, phone } = userData;
 
         axios.post("http://localhost:3001/api/user/register",
             {
@@ -19,7 +20,8 @@ const Register = () => {
                 last_name,
                 age,
                 email,
-                password
+                password, 
+                phone
             })
             .then(async (response) => {
                 const dataEmail = {

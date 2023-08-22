@@ -2,9 +2,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { SHA256 } from 'crypto-js';
+import { useState } from "react";
 
 
 const UserForm = () => {
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const location = useLocation();
 
@@ -50,12 +53,12 @@ const UserForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { first_name, last_name, email, roles, age, password, verified } = e.target;
+        const { first_name, last_name, email, roles, age, newPassword, verified } = e.target;
         // console.log(verified.checked)
-        let hashedPassword = password.value;
+        let hashedPassword = newPassword.value;
 
-        if (password.value !== "") {
-            hashedPassword = SHA256(password.value).toString();
+        if (newPassword.value !== "") {
+            hashedPassword = SHA256(newPassword.value).toString();
         }
 
         const body = {
@@ -120,6 +123,7 @@ const UserForm = () => {
                         <label htmlFor="roles">Role</label>
                         <select name="roles" id="roles"
                             defaultValue={currentUser ? (currentUser.role) : "user"}
+                            disabled={(currentUser.role !== 'admin')}
                         >
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
@@ -127,6 +131,7 @@ const UserForm = () => {
                     </div>
                 </div>
 
+                {/* TODO: Agregar el campo para el telefono y repetir contraseña, junto con las validaciones necesarias */}
                 <div className="row">
                     <div className="rows name">
                         <label htmlFor="age">Age</label>
@@ -137,8 +142,15 @@ const UserForm = () => {
                         />
                     </div>
                     <div className="rows name">
-                        <label htmlFor="password">Password</label>
-                        <input type="text" name="password" required={!currentUser} />
+                        <label htmlFor="newPassword">New Password</label>
+                        <input type={showPassword ? "text" : "password"} name="newPassword" required={!currentUser} autoComplete="off" />
+                        <div className="row" style={{ gap: "6px" }}>
+                            <input type="checkbox" name="showPassword" id="showPassword"
+                                style={{ minHeight: "0" }}
+                                onChange={e => setShowPassword(e.target.checked)}
+                            />
+                            <label htmlFor="showPassword">Show Password</label>
+                        </div>
                     </div>
                 </div>
 
@@ -146,8 +158,16 @@ const UserForm = () => {
                     <div className="rows">
                         <input type="checkbox" name="verified"
                             defaultChecked={currentUser ? currentUser.verified : false}
+                            disabled={(currentUser.role !== 'admin')}
                         />
                         <label htmlFor="verified">Is Verified</label>
+                    </div>
+
+                    <div className="rows">
+                        <input type="checkbox" name="fa"
+                        defaultChecked={currentUser ? currentUser.has2FA : false}
+                        />
+                        <label htmlFor="verified">2FA</label>
                     </div>
                 </div>
 
