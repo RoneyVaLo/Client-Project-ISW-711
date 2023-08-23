@@ -15,7 +15,7 @@ const RegisterForm = ({ saveUser, isLoading }) => {
         e.preventDefault();
 
         // TODO: Agregar el input y la variable para la foto de perfil
-        const { first_name, last_name, age, email, password, repeatPassword } = e.target;
+        const { first_name, last_name, age, email, phone, password, repeatPassword } = e.target;
 
         if (password.value === repeatPassword.value) {
             const hashedPassword = SHA256(password.value).toString();
@@ -25,6 +25,7 @@ const RegisterForm = ({ saveUser, isLoading }) => {
                 last_name: last_name.value,
                 age: age.value,
                 email: email.value,
+                phone: phone.value,
                 password: hashedPassword
             };
 
@@ -56,6 +57,11 @@ const RegisterForm = ({ saveUser, isLoading }) => {
             <div className="form-group">
                 <label htmlFor="email" className="label">Email</label>
                 <input type="email" name="email" required className="input" />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="phone" className="label">Phone</label>
+                <input type="text" name="phone" required className="input" />
             </div>
 
             <div className="form-group">
